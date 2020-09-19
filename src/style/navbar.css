@@ -1,5 +1,6 @@
 
 .nav-unit:hover{
     border:0;
+    border-radius: 10px;
     background-color: rgb(94, 102, 94);
 }
