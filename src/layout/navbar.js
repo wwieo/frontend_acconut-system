@@ -9,7 +9,6 @@ class NavComponent extends React.Component{
           <div>
             <Navbar bg="dark" variant="dark">
               <Navbar.Brand   className="mr-auto" href="/">豪好用 HaoHaoYung</Navbar.Brand>
-            
               <Nav className="mr-right">
                 <Nav.Link className="nav-unit" href="/user_action">Login</Nav.Link>
               </Nav>

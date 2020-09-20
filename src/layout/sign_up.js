@@ -6,9 +6,8 @@ import '../style/user_action.css';
 class SignUp extends React.Component {
     render() {
         return(
-            <form className ="signUp">
-                <p className="p" md="a">Sign up</p>
-
+            <div>
+                <br/>
                 <div className="form-group">
                     <label>Full Name</label>
                     <input type="text" className="form-control" placeholder="Enter full name" />
@@ -38,7 +37,7 @@ class SignUp extends React.Component {
                 <div className="text-center">
                 <MDBBtn color="primary">Register</MDBBtn>
                 </div>
-            </form>            
+            </div>           
         );
     }
 }

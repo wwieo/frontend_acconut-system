@@ -1,10 +1,10 @@
-.signUp{
+.user_action_form{
     padding-left: 5%;
     padding-right: 5%;
     padding-bottom: 5%;
+    padding-top: 2%;
     border-radius: 10px;
     background-color: rgba(50, 50, 50, 0.8);
-
 }
 
 .form-group {
