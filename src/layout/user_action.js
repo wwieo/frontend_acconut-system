@@ -17,6 +17,8 @@ class UserAction extends React.Component {
                     <MDBCol xs lg="3"/>
                         <MDBCol>
                             <div className ="user_action_form"> 
+                                <div className = "title"><a href = "/" >HaoHaoYung</ a><br/></div>
+                                <div className = "vice_title"><label>給你最極致的豪好體驗</label><br/></div>
                                 <Tabs activeTab='login'>
                                     <TabList>
                                         <Tab component={CustomTab} label='Login' id='login' />

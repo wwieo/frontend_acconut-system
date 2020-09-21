@@ -1,19 +1,35 @@
+.title{
+    text-align: center;
+    font-size: 300%;
+}
+.title :hover{
+    text-decoration: none;
+    color: #007bff;
+}
+
+.vice_title{
+    text-align: center;
+    color: whitesmoke;
+}
+
+
 .user_action_form{
     padding-left: 5%;
     padding-right: 5%;
     padding-bottom: 5%;
-    padding-top: 2%;
     border-radius: 10px;
     background-color: rgba(50, 50, 50, 0.8);
+    width: 100%;
 }
 
 .form-group {
     margin:0;
     color: white;
 }
-
-.p{
-    color: white;
-    text-align: center;
-    font-size: xx-large;
+.alert{
+    float: right;
+    padding: 0;
+    margin: 0 auto;
+    text-align: right;
+    color: red;
 }

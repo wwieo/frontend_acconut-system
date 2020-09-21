@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch , Route} from 'react-router-dom';
+import {Route, withRouter} from 'react-router-dom';
 
 import NavComponent from './navbar'
 import Home from './home'
@@ -10,15 +10,13 @@ class Layout extends React.Component{
     render(){
         return (
             <div>
-                <NavComponent/>
-                <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/user_action" component={UserAction} />
-                </Switch>
+                {this.props.location.pathname !== '/user_action' && <NavComponent />}
+                <Route exact path="/" component={Home} />
+                <Route exact path="/user_action" component={UserAction} />
             </div>
         );
     }
 }
 
-export default Layout;
+export default withRouter(Layout);
     
