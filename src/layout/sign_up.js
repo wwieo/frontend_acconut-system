@@ -1,6 +1,8 @@
 import React from "react";
 import { MDBBtn } from 'mdbreact';
 
+import {format_check, ifDataExist} from '../controller/frontend_check/sign_up';
+
 import '../style/user_action.css';
 
 class SignUp extends React.Component {
@@ -15,123 +17,90 @@ class SignUp extends React.Component {
                 cfPassword: ""
             },
             error:{
-                userNameAlert: false,
-                fullNameAlert: false,
-                emailAlert: false,
-                passwordAlert: false,
-                cfPasswordAlert: false
+                userNameAlert: "",
+                fullNameAlert: "",
+                emailAlert: "",
+                passwordAlert: "",
+                cfPasswordAlert: ""
             }
         }
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(e){
-        let status = this.state;
         const fieldName = e.target.name;
         const fieldValue = e.target.value;  
-
-        status[fieldName] = fieldValue;
-        this.setState({status:status});
+        const nowStatus = {
+            ...this.state.status,
+            [fieldName]: fieldValue
+        }
+        const nowError = {
+            ...this.state.error,
+            [fieldName+"Alert"]: ifDataExist(fieldName, fieldValue)
+        }
+        this.setState({status: nowStatus});
+       // this.setState({error: nowError});
     }
     handleBlur(e) {
-        let status = this.state;
         const fieldName = e.target.name;
         const fieldValue = e.target.value; 
-        switch(fieldName){
-            case 'userName':
-                if (fieldValue.length > 24 || fieldValue.length < 4)
-                    status["userNameAlert"] = true;
-                else
-                    status["userNameAlert"] = false;
-                this.setState({status:status});
-                break;
-            case 'fullName':
-                if (fieldValue.length > 24 || fieldValue.length < 1)
-                    status["fullNameAlert"] = true; 
-                else
-                    status["fullNameAlert"] = false;
-                this.setState({status:status});
-                break;
-            case 'email':
-                if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(fieldValue))
-                    status["emailAlert"] = false;
-                else
-                    status["emailAlert"] = true; 
-                this.setState({status:status});
-                break;
-            case 'password':
-                if (fieldValue.length < 6)
-                    status["passwordAlert"] = true;
-                else
-                    status["passwordAlert"] = false;
-                this.setState({status:status});
-                break;
-            case 'cfPassword':
-                if (fieldValue !== status["passwordValue"])
-                    status["cfPasswordAlert"] = true;
-                else
-                    status["cfPasswordAlert"] = false;
-                this.setState({status:status});  
-                break;
-            default :
-                break;
-
+        const nowError = {
+            ...this.state.error,
+            [fieldName+"Alert"]: format_check(this.state, fieldName, fieldValue)
         }
+        this.setState({error: nowError});
     }   
-
-
+//onchange update alertText for api and set state all value
+//onblur only update alertText 
     render() {
+        const nowState = this.state.status;
+        const nowError = this.state.error;
         return(
-            <div>
+            <div>       
                 <br/>
                 <div className="form-group">
                     <label>User Name</label>                    
-                    <label className="alert">{this.state.userNameAlert? 
-                                              "* Length should be upper than 3 and lower than 25":""}</label>
+                    <label className="alert">{nowError["userNameAlert"]}</label>
                     <input type="text" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.userName} name="userName"
+                           value={nowState["userName"]||""} name="userName"
                            className="form-control" placeholder="Enter user name" 
-                           style={{borderColor:this.state.userNameAlert?"red":""}}/>
+                           style={{borderColor:nowError["userNameAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="form-group">
                     <label>Full Name</label>
-                    <label className="alert">{this.state.fullNameAlert?
-                                              "* Length should be upper than 0 and lower than 25":""}</label>
+                    <label className="alert">{nowError["fullNameAlert"]}</label>
                     <input type="text" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.fullName} name="fullName"
+                           value={nowState["fullName"]||""} name="fullName"
                            className="form-control" placeholder="Enter full name" 
-                           style={{borderColor:this.state.fullNameAlert?"red":""}}/>
+                           style={{borderColor:nowError["fullNameAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="form-group">
                     <label>Email address</label>
-                    <label className="alert">{this.state.emailAlert?
-                                              "* Email pattern is not correct":""}</label>
+                    <label className="alert">{nowError["emailAlert"]}</label>
                     <input type="email"  onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.email} name="email"
+                           value={nowState["email"]||""} name="email"
                            className="form-control" placeholder="Enter email"  
-                           style={{borderColor:this.state.emailAlert?"red":""}}/>
+                           style={{borderColor:nowError["emailAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <label className="alert">{this.state.passwordAlert?
-                                              "* Length should be upper than 5":""}</label>
+                    <label className="alert">{nowError["passwordAlert"]}</label>
                     <input type="password" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.password} name="password"
+                           value={nowState["password"]||""} name="password"
                            className="form-control" placeholder="Enter password" 
-                           style={{borderColor:this.state.passwordAlert?"red":""}}/>
+                           style={{borderColor:nowError["passwordAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="form-group">
                     <label>Password confirmed</label>
-                    <label className="alert">{this.state.cfPasswordAlert?
-                                              "* Not the same password":""}</label>
+                    <label className="alert">{nowError["cfPasswordAlert"]}</label>
                     <input type="password"  onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.cfPassword} name="cfPassword"
+                           value={nowState["cfPassword"]||""} name="cfPassword"
                            className="form-control" placeholder="Enter password again" 
-                           style={{borderColor:this.state.cfPasswordAlert?"red":""}}/>
+                           style={{borderColor:nowError["cfPasswordAlert"]?"red":""}}/>
                 </div><br/>
                 
 
