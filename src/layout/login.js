@@ -58,7 +58,7 @@ class Login extends React.Component {
                 <div className="form-group">
                     <label>Username or email</label>
                     <label className="alert">{this.state.accountAlert? 
-                                              "* Length should be upper than 3":""}</label>
+                                              "* Length should be more than 3":""}</label>
                     <input type="text" onBlur={this.handleBlur} onChange={this.handleChange}
                            value={this.state.account} name="account"
                            className="form-control" placeholder="Enter user name or email"  
@@ -68,7 +68,7 @@ class Login extends React.Component {
                 <div className="form-group">
                     <label>Password</label>
                     <label className="alert">{this.state.passwordAlert? 
-                                              "* Length should be upper than 5":""}</label>
+                                              "* Length should be more than 5":""}</label>
                     <input type="password" onBlur={this.handleBlur} onChange={this.handleChange}
                            value={this.state.password} name="password"
                            className="form-control" placeholder="Enter password"  

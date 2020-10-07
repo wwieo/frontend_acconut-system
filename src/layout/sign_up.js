@@ -33,14 +33,17 @@ class SignUp extends React.Component {
         const nowStatus = {
             ...this.state.status,
             [fieldName]: fieldValue
-        }
+        }/*
         const nowError = {
             ...this.state.error,
             [fieldName+"Alert"]: ifDataExist(fieldName, fieldValue)
         }
+        this.setState({error: nowError});   
+*/
         this.setState({status: nowStatus});
-       // this.setState({error: nowError});
+        //async response should be fixed
     }
+    
     handleBlur(e) {
         const fieldName = e.target.name;
         const fieldValue = e.target.value; 
@@ -51,7 +54,6 @@ class SignUp extends React.Component {
         this.setState({error: nowError});
     }   
 //onchange update alertText for api and set state all value
-//onblur only update alertText 
     render() {
         const nowState = this.state.status;
         const nowError = this.state.error;
