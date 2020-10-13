@@ -1,7 +1,8 @@
 import React from "react";
 import { MDBBtn } from 'mdbreact';
 
-import {format_check, ifDataExist} from '../controller/frontend_check/sign_up';
+import {format_check} from '../controller/frontend_check/sign_up';
+import {checkExistByUserName, checkExistByEmail, register} from '../controller/api_check/sign_up'
 
 import '../style/user_action.css';
 
@@ -26,6 +27,7 @@ class SignUp extends React.Component {
         }
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     handleChange(e){
         const fieldName = e.target.name;
@@ -33,17 +35,12 @@ class SignUp extends React.Component {
         const nowStatus = {
             ...this.state.status,
             [fieldName]: fieldValue
-        }/*
-        const nowError = {
-            ...this.state.error,
-            [fieldName+"Alert"]: ifDataExist(fieldName, fieldValue)
         }
-        this.setState({error: nowError});   
-*/
+        
         this.setState({status: nowStatus});
-        //async response should be fixed
+        if(fieldName === "userName")
+            this.ifDataExist(fieldName, fieldValue);
     }
-    
     handleBlur(e) {
         const fieldName = e.target.name;
         const fieldValue = e.target.value; 
@@ -52,8 +49,55 @@ class SignUp extends React.Component {
             [fieldName+"Alert"]: format_check(this.state, fieldName, fieldValue)
         }
         this.setState({error: nowError});
+        if(fieldName === "email")
+            this.ifDataExist(fieldName, fieldValue);
     }   
-//onchange update alertText for api and set state all value
+    ifDataExist = async(fieldName, fieldValue)=>{
+        let alertText = "";
+        if (fieldName === "userName"){
+            if (fieldValue.length < 25 && fieldValue.length > 3){
+                const result = await checkExistByUserName(fieldValue);
+                if (result.data.results === true)
+                    alertText = "* Someone has registered this user name.";
+                else
+                    alertText = this.state.error.userNameAlert;
+            }
+        };
+        if (fieldName === "email"){
+            const result = await checkExistByEmail(fieldValue);
+            if (result.data.results === true)
+                alertText = "* Someone has registered this email.";
+            else
+                alertText = this.state.error.emailAlert;
+        };
+        const nowError = {
+            ...this.state.error,
+            [fieldName+"Alert"]: alertText
+        }
+        this.setState({error: nowError});
+    }
+    handleClick(){
+        // check all fields' format
+        let error = {};
+        Object.keys(this.state.status).forEach(stateKey=>{
+            let stateValue = this.state.status[stateKey];
+            error[stateKey+"Alert"] = format_check(this.state, stateKey, stateValue);
+            if(stateKey === "email" || stateKey === "userName")
+                this.ifDataExist(stateKey, stateValue);
+        });
+        this.setState({error: error});
+
+        //final check
+        let check = true;
+        Object.values(this.state.error).forEach(checkData=>{
+            checkData !== "" && (check = false)
+        });
+
+        //send login request
+        if (check){
+            console.log("login");
+        }
+    }
     render() {
         const nowState = this.state.status;
         const nowError = this.state.error;
@@ -107,7 +151,7 @@ class SignUp extends React.Component {
                 
 
                 <div className="text-center">
-                <MDBBtn color="primary">Register</MDBBtn>
+                <MDBBtn color="primary" onClick={this.handleClick}>Register</MDBBtn>
                 </div>
             </div>           
         );

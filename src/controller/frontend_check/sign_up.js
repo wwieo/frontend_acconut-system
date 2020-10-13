@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import {checkExistByUserName} from '../api_check/sign_up'
 
 const format_check = (state, fieldName, fieldValue) =>{
     let result = "";
@@ -23,31 +21,8 @@ const format_check = (state, fieldName, fieldValue) =>{
         if (fieldValue !== state.status["password"])
             result = "* Not the same password";
     }
-        return result;
-}
-/*
-const ifDataExist =(fieldName, fieldValue)=>{
-    let result = "";    
-    const [data, setDate] = useState("");
-
-    useEffect(()=>{
-        const check = async()=>{
-            if (fieldName === "userName"){
-                if (fieldValue.length < 25 && fieldValue.length > 3){
-        
-                    result = await checkExistByUserName(fieldValue)
-                    .then((response)=>{
-                        if (response.data.results === true)
-                            return "* Someone has registered this user name.";
-                        return "";
-                    });
-                }
-            };
-        }
-    })
-
-    
     return result;
-}*/
+}
+
 
 export {format_check};
