@@ -39,8 +39,8 @@ class SignUp extends React.Component {
             ...this.state.status,
             [fieldName]: fieldValue
         }
-        
         this.setState({status: nowStatus});
+
         if(fieldName === "userName")
             this.ifDataExist(fieldName, fieldValue);
     }
@@ -96,12 +96,12 @@ class SignUp extends React.Component {
             checkData !== "" && (check = false)
         });
 
-        //send login request
+        //send signUp request
         if (check){
-            this.login();
+            this.signUp();
         }
     }
-    login = async() => {
+    signUp = async() => {
         register(this.state.status)
         .then(
             result=>{

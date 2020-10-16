@@ -1,6 +1,8 @@
 import React from "react";
 import { MDBBtn } from 'mdbreact';
 
+import {login} from '../controller/api_check/login'
+import {format_check} from '../controller/frontend_check/login';
 import '../style/user_action.css';
 
 class Login extends React.Component {
@@ -12,73 +14,120 @@ class Login extends React.Component {
                 password: ""
             },
             error:{
-                accountAlert: false,
-                passwordAlert: false
+                accountAlert: null,
+                passwordAlert: null
+            },
+            backendError:{
+                backendAlert: null
             }
         }
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
     handleChange(e){
-        let status = this.state;
         const fieldName = e.target.name;
         const fieldValue = e.target.value;  
 
-        localStorage.removeItem("reg_user_name");
-        status[fieldName] = fieldValue;
-        this.setState({status:status});
+        const nowStatus = {
+            ...this.state.status,
+            [fieldName]: fieldValue
+        }
+        this.setState({status: nowStatus});
     }
     handleBlur(e) {
-        let status = this.state;
         const fieldName = e.target.name;
         const fieldValue = e.target.value; 
-        switch(fieldName){
-            case 'account':
-                if (fieldValue.length < 4)
-                    status["accountAlert"] = true;
-                else
-                    status["accountAlert"] = false;
-                this.setState({status:status});
-                break;
-            case 'password':
-                if (fieldValue.length < 6)
-                    status["passwordAlert"] = true;
-                else
-                    status["passwordAlert"] = false;
-                this.setState({status:status});
-                break;
-            default :
-                break;
 
+        const nowError = {
+            ...this.state.error,
+            [fieldName+"Alert"]: format_check(fieldName, fieldValue)
         }
+        this.setState({error: nowError});
     } 
+    handleClick(e){
+        if(e.target.name === "account"){
+            if(localStorage.getItem["reg_user_name"] !== null)
+                localStorage.removeItem("reg_user_name");
+        }
+        else{
+            this.login();
+        }
+    }
+    handleKeyDown(e){
+        if(e.key === 'Enter'){
+            this.login();
+        }
+    }
+    login = async()=>{
+        let error = {};
+        await Object.keys(this.state.status).forEach(stateKey=>{
+            let stateValue = this.state.status[stateKey];
+            error[stateKey+"Alert"] = format_check(stateKey, stateValue);
+        });
+        this.setState({error: error});
+
+        let check = true;
+        await Object.values(this.state.error).forEach(checkData=>{
+            checkData !== "" && (check = false)
+        });
+
+        //send login request
+        if (check){
+            login(this.state.status)
+            //loading anime
+            .then(
+                result => {
+                    if(result.data.success === 1){
+                        localStorage.setItem('isLogin', true);
+                        localStorage.setItem('user_name', result.data.user_name);
+                        localStorage.setItem('email', result.data.email);
+                        localStorage.setItem('name', result.data.name);
+                        localStorage.setItem('userToken', result.data.token);
+                    }
+                    else{
+                        let backendError = {};
+                        backendError["backendAlert"] =  "Account or password is wrong maybe.";
+                        this.setState({backendError: backendError});
+                    }
+                }
+            )
+        }
+    }
     render() {
+        const nowState = this.state.status;
+        const nowError = this.state.error;
+        const nowBackendError = this.state.backendError;
+     
         return (
             <div>
                 <br/>
                 <div className="form-group">
                     <label>Username or email</label>
                     <label className="reg_success">{localStorage["reg_user_name"]? "* Register success." : null}</label>
-                    <label className="alert">{this.state.accountAlert? 
-                                              "* Length should be more than 3":""}</label>
-                    <input type="text" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={localStorage["reg_user_name"]?localStorage["reg_user_name"]:this.state.account} 
+                    <label className="alert">{nowError["accountAlert"]}</label>
+                    <input type="text" onKeyPress={this.handleKeyDown}
+                           onBlur={this.handleBlur} onChange={this.handleChange}
+                           value={localStorage["reg_user_name"]?localStorage["reg_user_name"]:nowState["account"]} onClick={this.handleClick} 
                            name="account" className="form-control" placeholder="Enter user name or email"  
-                           style={{borderColor:this.state.accountAlert?"red":""}}/>
+                           style={{borderColor:nowError["accountAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <label className="alert">{this.state.passwordAlert? 
-                                              "* Length should be more than 5":""}</label>
-                    <input type="password" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.password} name="password"
+                    <label className="alert">{nowError["passwordAlert"]}</label>
+                    <input type="password" onKeyPress={this.handleKeyDown}
+                           onBlur={this.handleBlur} onChange={this.handleChange}
+                           value={nowState["password"]} name="password"
                            className="form-control" placeholder="Enter password"  
-                           style={{borderColor:this.state.passwordAlert?"red":""}}/>
+                           style={{borderColor:nowError["passwordAlert"]?"red":""}}/>
                 </div><br/>
 
                 <div className="text-center">
-                <MDBBtn color="primary">Login</MDBBtn>
+                    <label className="backendAlert">{nowBackendError["backendAlert"]}</label>
+                    {nowBackendError["backendAlert"]? <p/> : null}
+                    <MDBBtn color="primary" onClick={this.handleClick}>Login</MDBBtn>
                 </div>
             </div>
         );

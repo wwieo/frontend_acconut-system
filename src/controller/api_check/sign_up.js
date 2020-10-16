@@ -12,9 +12,7 @@ const checkExistByUserName = (userName) => {
 
 const checkExistByEmail = (email) => {
     const url = api + "/exist_email/" + email;
-    /*const info = {
-                user_name: userName,
-            };*/
+
     return axios.get(url);
 }
 
