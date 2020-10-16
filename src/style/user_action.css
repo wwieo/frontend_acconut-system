@@ -33,3 +33,18 @@
     text-align: right;
     color: red;
 }
+
+.backendAlert{
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+    color: red;
+}
+
+.reg_success{
+    float: right;
+    padding: 0;
+    margin: 0 auto;
+    text-align: right;
+    color: green;
+}

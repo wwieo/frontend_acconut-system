@@ -21,8 +21,8 @@ const checkExistByEmail = (email) => {
 const register = (user) => {
     const url = api;
     const data = {
-        user_name: user.user_name,
-        name: user.name,
+        user_name: user.userName,
+        name: user.fullName,
         email: user.email,
         password: user.password
     }

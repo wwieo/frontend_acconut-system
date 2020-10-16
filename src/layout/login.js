@@ -24,6 +24,7 @@ class Login extends React.Component {
         const fieldName = e.target.name;
         const fieldValue = e.target.value;  
 
+        localStorage.removeItem("reg_user_name");
         status[fieldName] = fieldValue;
         this.setState({status:status});
     }
@@ -57,11 +58,12 @@ class Login extends React.Component {
                 <br/>
                 <div className="form-group">
                     <label>Username or email</label>
+                    <label className="reg_success">{localStorage["reg_user_name"]? "* Register success." : null}</label>
                     <label className="alert">{this.state.accountAlert? 
                                               "* Length should be more than 3":""}</label>
                     <input type="text" onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={this.state.account} name="account"
-                           className="form-control" placeholder="Enter user name or email"  
+                           value={localStorage["reg_user_name"]?localStorage["reg_user_name"]:this.state.account} 
+                           name="account" className="form-control" placeholder="Enter user name or email"  
                            style={{borderColor:this.state.accountAlert?"red":""}}/>
                 </div><br/>
 

@@ -18,11 +18,14 @@ class SignUp extends React.Component {
                 cfPassword: ""
             },
             error:{
-                userNameAlert: "",
-                fullNameAlert: "",
-                emailAlert: "",
-                passwordAlert: "",
-                cfPasswordAlert: ""
+                userNameAlert: null,
+                fullNameAlert: null,
+                emailAlert: null,
+                passwordAlert: null,
+                cfPasswordAlert: null
+            },
+            backendError:{
+                backendAlert: null
             }
         }
         this.handleBlur = this.handleBlur.bind(this);
@@ -44,13 +47,13 @@ class SignUp extends React.Component {
     handleBlur(e) {
         const fieldName = e.target.name;
         const fieldValue = e.target.value; 
+        if(fieldName === "email" || fieldName === "userName")
+            this.ifDataExist(fieldName, fieldValue);
         const nowError = {
             ...this.state.error,
             [fieldName+"Alert"]: format_check(this.state, fieldName, fieldValue)
         }
         this.setState({error: nowError});
-        if(fieldName === "email")
-            this.ifDataExist(fieldName, fieldValue);
     }   
     ifDataExist = async(fieldName, fieldValue)=>{
         let alertText = "";
@@ -95,12 +98,33 @@ class SignUp extends React.Component {
 
         //send login request
         if (check){
-            console.log("login");
+            this.login();
         }
+    }
+    login = async() => {
+        register(this.state.status)
+        .then(
+            result=>{
+                if(result.data.success === 1){
+                    localStorage.setItem('reg_user_name', result.data.results.user_name)
+                    let backendError = {};
+                    backendError["backendAlert"] = null;
+                    this.setState({backendError: backendError});
+                    window.location.reload()
+
+                }
+                else if(result.data.success === 0){
+                    let backendError = {};
+                    backendError["backendAlert"] =  "Something got error";
+                    this.setState({backendError: backendError});
+                }
+            }
+        )
     }
     render() {
         const nowState = this.state.status;
         const nowError = this.state.error;
+        const nowBackendError = this.state.backendError;
         return(
             <div>       
                 <br/>
@@ -151,7 +175,9 @@ class SignUp extends React.Component {
                 
 
                 <div className="text-center">
-                <MDBBtn color="primary" onClick={this.handleClick}>Register</MDBBtn>
+                    <label className="backendAlert">{nowBackendError["backendAlert"]}</label>
+                    {nowBackendError["backendAlert"]? <p/> : null}
+                    <MDBBtn color="primary" onClick={this.handleClick}>Register</MDBBtn>
                 </div>
             </div>           
         );
