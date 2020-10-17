@@ -4,6 +4,7 @@ import {Route, withRouter} from 'react-router-dom';
 import NavComponent from './navbar'
 import Home from './home'
 import UserAction from './user_action'
+import PersonalData from './personal_data'
 
 
 class Layout extends React.Component{
@@ -13,6 +14,7 @@ class Layout extends React.Component{
                 {this.props.location.pathname !== '/user_action' && <NavComponent />}
                 <Route exact path="/" component={Home} />
                 <Route exact path="/user_action" component={UserAction} />
+                <Route exact path="/personal_data" component={PersonalData} />
             </div>
         );
     }

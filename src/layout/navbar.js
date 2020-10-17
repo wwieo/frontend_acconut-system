@@ -13,8 +13,8 @@ class NavComponent extends React.Component{
               <Navbar.Brand   className="mr-auto" href="/">豪好用 HaoHaoYung</Navbar.Brand>
               <Nav className="mr-right">
                 {localStorage.getItem("isLogin")?
-                  <div>
-                    <Nav.Link className="nav-unit" href="/">{localStorage.getItem("name")}</Nav.Link>
+                  <div className="navRight">
+                    <Nav.Link className="nav-unit" href="/personal_data">{localStorage.getItem("name")}</Nav.Link>
                     <Nav.Link className="nav-unit" href="/" onClick={this.logout}>Logout</Nav.Link>
                   </div>
                   : <Nav.Link className="nav-unit" href="/user_action">Login</Nav.Link>}
