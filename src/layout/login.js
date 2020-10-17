@@ -1,8 +1,9 @@
 import React from "react";
-
 import ReactLoading from 'react-loading';
+
 import { MDBBtn } from 'mdbreact';
 
+import { withRouter } from 'react-router';
 import {login} from '../controller/api_check/login'
 import {format_check} from '../controller/frontend_check/login';
 import '../style/user_action.css';
@@ -78,21 +79,21 @@ class Login extends React.Component {
         if (check){
             this.setState({isLoading: true});
             login(this.state.status)
-            //loading anime
             .then(
                 result => {
+                    this.setState({isLoading: false});
                     if(result.data.success === 1){
                         localStorage.setItem('isLogin', true);
                         localStorage.setItem('user_name', result.data.user_name);
                         localStorage.setItem('email', result.data.email);
                         localStorage.setItem('name', result.data.name);
                         localStorage.setItem('userToken', result.data.token);
-                        this.setState({backendError: null})
+                        this.setState({backendError: null});
+                        this.props.history.push('/'); //redirect to homepage
                     }
                     else{
                         this.setState({backendError: "Account or password is wrong maybe."});
                     }
-                    this.setState({isLoading: false});
                 }
             )
         }
@@ -137,4 +138,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);

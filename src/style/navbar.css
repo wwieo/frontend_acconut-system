@@ -4,3 +4,6 @@
     border-radius: 10px;
     background-color: rgb(94, 102, 94);
 }
+.nav-link{
+    display: inline-block;
+}
