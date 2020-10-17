@@ -16,7 +16,7 @@
 .user_action_form{
     padding-left: 5%;
     padding-right: 5%;
-    padding-bottom: 5%;
+    padding-bottom: 2%;
     border-radius: 10px;
     background-color: rgba(50, 50, 50, 0.8);
     width: 100%;
@@ -47,4 +47,10 @@
     margin: 0 auto;
     text-align: right;
     color: green;
+}
+
+.loadingAnime{
+    text-align: center;
+    margin: 0 auto;
+    color: white
 }

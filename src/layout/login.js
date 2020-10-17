@@ -1,4 +1,6 @@
 import React from "react";
+
+import ReactLoading from 'react-loading';
 import { MDBBtn } from 'mdbreact';
 
 import {login} from '../controller/api_check/login'
@@ -17,9 +19,8 @@ class Login extends React.Component {
                 accountAlert: null,
                 passwordAlert: null
             },
-            backendError:{
-                backendAlert: null
-            }
+            backendError: null,
+            isLoading: false
         }
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -75,6 +76,7 @@ class Login extends React.Component {
 
         //send login request
         if (check){
+            this.setState({isLoading: true});
             login(this.state.status)
             //loading anime
             .then(
@@ -85,12 +87,12 @@ class Login extends React.Component {
                         localStorage.setItem('email', result.data.email);
                         localStorage.setItem('name', result.data.name);
                         localStorage.setItem('userToken', result.data.token);
+                        this.setState({backendError: null})
                     }
                     else{
-                        let backendError = {};
-                        backendError["backendAlert"] =  "Account or password is wrong maybe.";
-                        this.setState({backendError: backendError});
+                        this.setState({backendError: "Account or password is wrong maybe."});
                     }
+                    this.setState({isLoading: false});
                 }
             )
         }
@@ -99,7 +101,7 @@ class Login extends React.Component {
         const nowState = this.state.status;
         const nowError = this.state.error;
         const nowBackendError = this.state.backendError;
-     
+        const isLoading = this.state.isLoading;
         return (
             <div>
                 <br/>
@@ -125,9 +127,10 @@ class Login extends React.Component {
                 </div><br/>
 
                 <div className="text-center">
-                    <label className="backendAlert">{nowBackendError["backendAlert"]}</label>
-                    {nowBackendError["backendAlert"]? <p/> : null}
                     <MDBBtn color="primary" onClick={this.handleClick}>Login</MDBBtn>
+                    {isLoading? <ReactLoading className="loadingAnime" type={'cylon'}/>:null}
+                    {nowBackendError? <p/>: null}
+                    <label className="backendAlert">{nowBackendError}</label>
                 </div>
             </div>
         );

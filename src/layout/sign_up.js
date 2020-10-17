@@ -1,4 +1,6 @@
 import React from "react";
+
+import ReactLoading from 'react-loading';
 import { MDBBtn } from 'mdbreact';
 
 import {format_check} from '../controller/frontend_check/sign_up';
@@ -23,10 +25,9 @@ class SignUp extends React.Component {
                 emailAlert: null,
                 passwordAlert: null,
                 cfPasswordAlert: null
-            },
-            backendError:{
-                backendAlert: null
-            }
+            },     
+            backendError: null,
+            isLoading: false
         }
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -63,7 +64,7 @@ class SignUp extends React.Component {
                 if (result.data.results === true)
                     alertText = "* Someone has registered this user name.";
                 else
-                    alertText = this.state.error.userNameAlert;
+                    alertText = "";
             }
         };
         if (fieldName === "email"){
@@ -71,7 +72,7 @@ class SignUp extends React.Component {
             if (result.data.results === true)
                 alertText = "* Someone has registered this email.";
             else
-                alertText = this.state.error.emailAlert;
+                alertText = "";
         };
         const nowError = {
             ...this.state.error,
@@ -98,6 +99,7 @@ class SignUp extends React.Component {
 
         //send signUp request
         if (check){
+            this.setState({isLoading: true});
             this.signUp();
         }
     }
@@ -107,17 +109,13 @@ class SignUp extends React.Component {
             result=>{
                 if(result.data.success === 1){
                     localStorage.setItem('reg_user_name', result.data.results.user_name)
-                    let backendError = {};
-                    backendError["backendAlert"] = null;
-                    this.setState({backendError: backendError});
+                    this.setState({backendError: null});
                     window.location.reload()
-
                 }
-                else if(result.data.success === 0){
-                    let backendError = {};
-                    backendError["backendAlert"] =  "Something got error";
-                    this.setState({backendError: backendError});
+                else{
+                    this.setState({backendError: "Something got error"});
                 }
+                this.setState({isLoading: false});
             }
         )
     }
@@ -125,6 +123,8 @@ class SignUp extends React.Component {
         const nowState = this.state.status;
         const nowError = this.state.error;
         const nowBackendError = this.state.backendError;
+        const isLoading = this.state.isLoading;
+
         return(
             <div>       
                 <br/>
@@ -175,9 +175,10 @@ class SignUp extends React.Component {
                 
 
                 <div className="text-center">
-                    <label className="backendAlert">{nowBackendError["backendAlert"]}</label>
-                    {nowBackendError["backendAlert"]? <p/> : null}
                     <MDBBtn color="primary" onClick={this.handleClick}>Register</MDBBtn>
+                    {isLoading? <ReactLoading className="loadingAnime" type={'cylon'}/>: null}
+                    {nowBackendError? <p/>: null}
+                    <label className="backendAlert">{nowBackendError}</label>
                 </div>
             </div>           
         );
