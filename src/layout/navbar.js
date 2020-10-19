@@ -17,7 +17,7 @@ class NavComponent extends React.Component{
                     <Nav.Link className="nav-unit" href="/personal_data">{localStorage.getItem("name")}</Nav.Link>
                     <Nav.Link className="nav-unit" href="/" onClick={this.logout}>Logout</Nav.Link>
                   </div>
-                  : <Nav.Link className="nav-unit" href="/user_action">Login</Nav.Link>}
+                  : <Nav.Link className="nav-unit" href="/user_action">Login / Register</Nav.Link>}
               </Nav>
             </Navbar>
           </div>

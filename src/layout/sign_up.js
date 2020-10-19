@@ -44,6 +44,13 @@ class SignUp extends React.Component {
 
         if(fieldName === "userName")
             this.ifDataExist(fieldName, fieldValue);
+        if(fieldName === "cfPassword"){
+            const nowError = {
+                ...this.state.error,
+                [fieldName+"Alert"]: format_check(this.state, fieldName, fieldValue)
+            }
+            this.setState({error: nowError});
+        }
     }
     handleBlur(e) {
         const fieldName = e.target.name;
@@ -63,8 +70,6 @@ class SignUp extends React.Component {
                 const result = await checkExistByUserName(fieldValue);
                 if (result.data.results === true)
                     alertText = "* Someone has registered this user name.";
-                else
-                    alertText = "";
             }
         };
         if (fieldName === "email"){
@@ -72,7 +77,7 @@ class SignUp extends React.Component {
             if (result.data.results === true)
                 alertText = "* Someone has registered this email.";
             else
-                alertText = "";
+                alertText = this.state.error.emailAlert;
         };
         const nowError = {
             ...this.state.error,

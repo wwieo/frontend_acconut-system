@@ -20,6 +20,8 @@ const format_check = (state, fieldName, fieldValue) =>{
     else if(fieldName === "cfPassword"){
         if (fieldValue !== state.status["password"])
             result = "* Not the same password";
+        if (fieldValue.length < 6)
+            result = "* Length should be more than 5";
     }
     return result;
 }

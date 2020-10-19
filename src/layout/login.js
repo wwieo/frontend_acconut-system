@@ -49,13 +49,10 @@ class Login extends React.Component {
         this.setState({error: nowError});
     } 
     handleClick(e){
-        if(e.target.name === "account"){
-            if(localStorage.getItem["reg_user_name"] !== null)
-                localStorage.removeItem("reg_user_name");
-        }
-        else{
+        if(e.target.name === "account")
+            localStorage.removeItem("reg_user_name");
+        else
             this.login();
-        }
     }
     handleKeyDown(e){
         if(e.key === 'Enter'){
@@ -66,6 +63,8 @@ class Login extends React.Component {
         let error = {};
         await Object.keys(this.state.status).forEach(stateKey=>{
             let stateValue = this.state.status[stateKey];
+            if((stateKey === "account") && (localStorage.getItem("reg_user_name"))) 
+                stateValue = localStorage.getItem("reg_user_name");  
             error[stateKey+"Alert"] = format_check(stateKey, stateValue);
         });
         this.setState({error: error});
@@ -89,6 +88,7 @@ class Login extends React.Component {
                         localStorage.setItem('name', result.data.name);
                         localStorage.setItem('userToken', result.data.token);
                         this.setState({backendError: null});
+                        localStorage.removeItem("reg_user_name");
                         this.props.history.push('/'); //redirect to homepage
                     }
                     else{
@@ -108,11 +108,11 @@ class Login extends React.Component {
                 <br/>
                 <div className="form-group">
                     <label>Username or email</label>
-                    <label className="reg_success">{localStorage["reg_user_name"]? "* Register success." : null}</label>
+                    <label className="reg_success">{localStorage.getItem("reg_user_name")? "* Register success." : null}</label>
                     <label className="alert">{nowError["accountAlert"]}</label>
                     <input type="text" onKeyPress={this.handleKeyDown}
-                           onBlur={this.handleBlur} onChange={this.handleChange}
-                           value={localStorage["reg_user_name"]?localStorage["reg_user_name"]:nowState["account"]} onClick={this.handleClick} 
+                           onBlur={this.handleBlur} onChange={this.handleChange} onClick={this.handleClick}
+                           value={localStorage.getItem("reg_user_name")?localStorage.getItem("reg_user_name"):nowState["account"]}
                            name="account" className="form-control" placeholder="Enter user name or email"  
                            style={{borderColor:nowError["accountAlert"]?"red":""}}/>
                 </div><br/>
