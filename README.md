@@ -1,10 +1,9 @@
-# Frontend Account System
-
-**The backend of this project can be used with [this](https://gitlab.com/wwieo055169/nodebackend)**  
+# Frontend Account System  
 
 * Functions can be used from now on:
     * Register / Login
-
+* The backend of this project can be used with [this](https://gitlab.com/wwieo055169/nodebackend).
+  
 ## To do list
 
 * Install package first:
@@ -13,9 +12,9 @@ npm i
 ```
 
 * Set the routes:
-    * [Backend api](./src/controller/api_check/)  
-    * [Port](./package.json) (default is 8000)  
-  
+    * [Backend api](./src/controller/api_check/)
+    * [Port](./package.json) (default is 8000)
+    
 * Then you can run this project by the command below:
 ```
 npm run start
