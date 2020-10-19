@@ -11,9 +11,10 @@
 npm i
 ```
 
-* Set the routes:
+* You can set the routes if you want:
     * [Backend api](./src/controller/api_check/)
-    * [Port](./package.json) (default is 8000)
+    * [Project port](./package.json) (default is 8000)
+
     
 * Then you can run this project by the command below:
 ```
