@@ -1,0 +1,22 @@
+.personal_data_form{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    border-radius: 10px;
+    background-color: rgba(50, 50, 50, 0.8);
+    width: 100%;
+    text-align: center;
+}
+
+.personal_img{
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    height: 100%;
+    border-radius: 50%;
+
+}
+
+.name_display{
+    color: white;
+}

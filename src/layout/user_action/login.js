@@ -4,9 +4,9 @@ import ReactLoading from 'react-loading';
 import { MDBBtn } from 'mdbreact';
 
 import { withRouter } from 'react-router';
-import {login} from '../controller/api_check/login'
-import {format_check} from '../controller/frontend_check/login';
-import '../style/user_action.css';
+import {login} from '../../controller/api_check/user_action/login'
+import {format_check} from '../../controller/frontend_check/user_action/login';
+import '../../style/user_action.css';
 
 class Login extends React.Component {
     constructor(props) {
@@ -49,10 +49,16 @@ class Login extends React.Component {
         this.setState({error: nowError});
     } 
     handleClick(e){
-        if(e.target.name === "account")
+        if(localStorage.getItem("reg_user_name")){
+            this.setState({status:{
+                ...this.state.status,
+                account: localStorage.getItem("reg_user_name")
+            }});
             localStorage.removeItem("reg_user_name");
-        else
+        }
+        if(e.target.name === "loginBtn"){
             this.login();
+        }
     }
     handleKeyDown(e){
         if(e.key === 'Enter'){
@@ -120,7 +126,7 @@ class Login extends React.Component {
                 <div className="form-group">
                     <label>Password</label>
                     <label className="alert">{nowError["passwordAlert"]}</label>
-                    <input type="password" onKeyPress={this.handleKeyDown}
+                    <input type="password" onKeyPress={this.handleKeyDown} onClick={this.handleClick}
                            onBlur={this.handleBlur} onChange={this.handleChange}
                            value={nowState["password"]} name="password"
                            className="form-control" placeholder="Enter password"  
@@ -128,7 +134,7 @@ class Login extends React.Component {
                 </div><br/>
 
                 <div className="text-center">
-                    <MDBBtn color="primary" onClick={this.handleClick}>Login</MDBBtn>
+                    <MDBBtn name="loginBtn" color="primary" onClick={this.handleClick}>Login</MDBBtn>
                     {isLoading? <ReactLoading className="loadingAnime" type={'cylon'}/>:null}
                     {nowBackendError? <p/>: null}
                     <label className="backendAlert">{nowBackendError}</label>

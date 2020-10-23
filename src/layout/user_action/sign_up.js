@@ -3,10 +3,10 @@ import React from "react";
 import ReactLoading from 'react-loading';
 import { MDBBtn } from 'mdbreact';
 
-import {format_check} from '../controller/frontend_check/sign_up';
-import {checkExistByUserName, checkExistByEmail, register} from '../controller/api_check/sign_up'
+import {format_check} from '../../controller/frontend_check/user_action/sign_up';
+import {checkExistByUserName, checkExistByEmail, register} from '../../controller/api_check/user_action/sign_up'
 
-import '../style/user_action.css';
+import '../../style/user_action.css';
 
 class SignUp extends React.Component {
     constructor(props) {

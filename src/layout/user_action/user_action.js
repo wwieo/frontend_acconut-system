@@ -2,12 +2,12 @@ import React from "react";
 import { MDBContainer, MDBRow, MDBCol} from 'mdbreact';
 import { Tabs, Tab, TabPanel, TabList } from 'react-re-super-tabs'
 
-import CustomTab from '../style/tab_style'
+import CustomTab from '../../style/tab_style'
 
 import SignUp from './sign_up';
 import Login from './login';
 
-import '../style/user_action.css';
+import '../../style/user_action.css';
 
   
 class UserAction extends React.Component {
