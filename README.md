@@ -21,7 +21,7 @@ npm run start
 ```
 
 ## Result
-![](result_present/homepage.png)
+![test](result_present/homepage.png)
 ****
 ![](result_present/signup_page.png)
 ****
